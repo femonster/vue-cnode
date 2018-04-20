@@ -23,3 +23,9 @@ function getArticle(aid) {
         return Promise.resolve(res.data)
     })
 }
+
+
+export {
+    getList,
+    getArticle
+}

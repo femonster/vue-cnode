@@ -1,12 +1,14 @@
 <template>
   <div id="app">
     <m-header></m-header>
-    <router-view/>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
-import MHeader from 'components/m-header' 
+import MHeader from 'components/base/m-header' 
 export default {
   name: 'App',
   components:{
