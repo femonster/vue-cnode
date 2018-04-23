@@ -9,7 +9,8 @@ function getList(page, limit, tab) {
     let data = {
         page: page,
         limit: limit,
-        tab: tab
+        tab: tab,
+        mdrender: false
     }
     return axios.get(url, { params: data }).then((res) => {
         return Promise.resolve(res.data)

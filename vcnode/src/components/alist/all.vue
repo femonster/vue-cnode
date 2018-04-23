@@ -2,29 +2,25 @@
   <div class="list-type all-list">
       <scroll 
       ref="scroll"
-      @pullingDown="onPullingDown"
-      @pullingUp="onPullingUp"
       :data="allList"
+      :tab="stab"
       >
-        <ul class="list-ul">
-          <li class="z-depth-1" v-for="(item,index) in allList" :key="index">
-            {{item.id}}
-          </li>
-        </ul>
       </scroll>
   </div>
 </template>
 <script>
   import Scroll from 'components/base/scroll';
   import {getList,getArticle} from 'api/api';
+  import {changeData} from 'common/js/util';
   export default {
     data(){
       return {
-        allList:[]
+        allList:[],
+        stab:"all"
       }
     },
     created(){
-       this._getAllList()
+       this._getAllList();
     },
     components:{
       Scroll
@@ -33,14 +29,10 @@
       onPullingDown(){
          console.log('触底加载');
       },
-      onPullingUp(){
-        console.log('下拉加载');
-      },
       _getAllList(){
         getList(1,20).then((res)=>{
-            
             if(res.success){
-                this.allList = res.data;
+                this.allList = changeData(res.data);
             }
         })
       }
@@ -49,7 +41,7 @@
   }
 </script>
 <style lang="scss" scoped>
-
+  
 </style>
 
 

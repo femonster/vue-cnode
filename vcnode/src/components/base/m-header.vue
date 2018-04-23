@@ -2,7 +2,7 @@
   <div class="m-header z-depth-1">
       <img src="https://cnodejs.org/public/images/cnodejs_light.svg" alt="logo">
       <ul class="all-list">
-          <li class="active"><router-link :to="'all'">全部</router-link></li>
+          <li><router-link :to="'all'">全部</router-link></li>
           <li><router-link :to="'good'">精华</router-link></li>
           <li><router-link :to="'share'">分享</router-link></li>
           <li><router-link :to="'ask'">问答</router-link></li>
@@ -12,7 +12,8 @@
 </template>
 <script>
 export default {
-  name:"m-header"
+  name:"m-header",
+  
 }
 </script>
 <style lang="scss">
@@ -39,19 +40,23 @@ export default {
         border-top:1px solid #e1e1e1;
         li{
             width: 20%;
-            height: 5vh;
+            height: 6.2vh;
             list-style: none;
             font-size: 14px;
             display: inline-block;
             color:#fff;
-            line-height: 2.5;
+            line-height: 6.2vh;
             box-sizing: border-box;
             a{
+                display: block;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
                 color: #ffffff;
             }
-        }
-        li.active{
-            border-bottom:5px solid #80bd01;
+            a.router-link-active{
+                border-bottom:5px solid #80bd01;    
+            }
         }
     }
 }
