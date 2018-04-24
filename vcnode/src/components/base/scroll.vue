@@ -1,6 +1,6 @@
 <template>
   <div class="list-wrapper" ref="wrapper">
-    <ul class="list-ul">
+    <ul class="list-ul" v-cloak>
         <li class="z-depth-1" v-for="(item,index) in data" :key="index" :data-aid="item.id">
             <div class="title-box">
               <div class="title-img">
@@ -24,7 +24,7 @@
             </div>
         </li>
     </ul>
-    <div class="pullup-wrapper" v-if="pullUpLoad">
+    <div class="pullup-wrapper" v-if="isPullUpLoad">
         <div class="before-trigger" v-if="!isPullUpLoad">
             <span>暂无更多</span>
         </div>
@@ -55,12 +55,12 @@
     data(){
       return{
         beforePullDown: true,
+        isRebounding: false,
         isPullingDown: false,
         isPullUpLoad: false,
-        bubbleY: 0,
+        pullUpDirty: true,
         pullDownStyle: '',
-        page:1,
-        limit:20
+        bubbleY: 0
       }
     },
     props:{
@@ -68,13 +68,9 @@
           type:Number,
           defalut:1
       },
-      tab:{
-        type:String,
-        default:"all"
-      },
-      pullUpLoad: {
-          type: null,
-          default: false
+      scrollbar: {
+        type: null,
+        default: false
       },
       pullDownRefresh: {
         type: null,
@@ -83,6 +79,10 @@
       pullUpLoad: {
         type: null,
         default: false
+      },
+      startY: {
+        type: Number,
+        default: 0
       },
       click:{
           type:Boolean,
@@ -95,62 +95,90 @@
       data:{
           type:Array,
           default:null
+      },
+      bounce: {
+        default: true
+      }
+    },
+    computed:{
+      // 加载文字可配
+      pullUpTxt(){
+        const moreTxt = this.PullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more;
+        const noMoreTxt = this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore;
+        return this.pullUpDirty ? moreTxt : noMoreTxt;
+      },
+      refreshTxt() {
+        return this.pullDownRefresh && this.pullDownRefresh.txt;
       }
     },
     mounted(){
-      setTimeout(()=>{
-        this._initScroll();
-      },20)
+        setTimeout(()=>{
+          this.initScroll();
+        },20)
+    },
+    created(){
+        this.pullDownInitTop = -50
     },
     methods:{
-      //获取数据
-      _getAllList(){
-        getList(this.page,this.limit).then((res)=>{
-            if(res.success){
-                this.data = changeData(res.data);
-                this.page++;
-            }
-        })
-      },
       // refresh scroll
       refresh() {
         this.scroll && this.scroll.refresh()
       },
       // init scroll
-      _initScroll(){
+      initScroll(){
         if(!this.$refs.wrapper) return;
-        this.scroll = new BScroll(this.$refs.wrapper,{
-            probeType:this.probeType,
-            click:this.click,
-            scrollbar:{
-              fade:true
-            },
-            pullDownRefresh: {
-              threshold: 50,
-              stop: 20
-            },
-            pullUpLoad:{
-              threshold: -50
-            }
-        })
+        let options = {
+            probeType: this.probeType,
+            click: this.click,
+            scrollbar: this.scrollbar,
+            pullDownRefresh: this.pullDownRefresh,
+            pullUpLoad: this.pullUpLoad,
+            startY: this.startY,
+            bounce: this.bounce
+        }
 
-        this._initPullUpLoad();
-        // this.scroll.on('pullingDown',()=>{
-        //     console.log("下拉刷新");
-        //     setTimeout(()=>{
-        //         this.scroll.finishPullDown(); 
-        //     },1000);
-            
-        // });
+        // 初始化scroll
+        this.scroll = new BScroll(this.$refs.wrapper,options);
+
+        if (this.pullDownRefresh) {
+          this._initPullDownRefresh()
+        }
+
+        if (this.pullUpLoad) {
+          this._initPullUpLoad()
+        }
         
       },
-      // 下拉加载
-      _initPullUpLoad(){
-          this.scroll.on('pullingUp',()=>{
-              console.log('下拉加载~~~');
-              this.isPullUpLoad = true;
-              this.$emit('pullingUp');
-          })
+      // 上滑加载
+      _initPullUpLoad() {
+        this.scroll.on('pullingUp', () => {
+          this.isPullUpLoad = true
+          this.$emit('pullingUp')
+        })
+      },
+      // 下拉刷新
+      _initPullDownRefresh() {
+        this.scroll.on('pullingDown', () => {
+          this.beforePullDown = false
+          this.isPullingDown = true
+          this.$emit('pullingDown')
+        })
+
+        this.scroll.on('scroll', (pos) => {
+          if (!this.pullDownRefresh) {
+            return
+          }
+          if (this.beforePullDown) {
+            this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop)
+            this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`
+          } else {
+            this.bubbleY = 0
+          }
+
+          if (this.isRebounding) {
+            this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`
+          }
+        })
       }
     },
     components:{
@@ -163,7 +191,7 @@
 .list-wrapper {
     width: 100%;
     margin-top: 13vh;
-    height: 88vh;
+    height: 87vh;
     box-sizing: border-box;
     overflow: hidden;
     .list-ul {
@@ -285,6 +313,7 @@
       transition: all;
       .after-trigger{
         margin-top: 10px;
+        width: 100%;
       }
     }
     .pullup-wrapper{
