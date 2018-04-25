@@ -1,10 +1,10 @@
 <template>
-  <div class="list-type share-list">
+  <div class="list-type all-list">
       <scroll 
       ref="scroll"
-      @pullingDown="onPullingDown"
-      @pullingUp="onPullingUp"
-      :data="shareList"
+      :data="allList"
+      :stab="stab"
+      @concatData="concatData"
       >
       </scroll>
   </div>
@@ -12,30 +12,31 @@
 <script>
   import Scroll from 'components/base/scroll';
   import {getList,getArticle} from 'api/api';
-  import {changeData} from 'common/js/util';
+  import {changeData,ease} from 'common/js/util';
   export default {
     data(){
       return {
-        shareList:[]
+        allList:[],
+        stab:"share",
+        limit:20
       }
     },
     created(){
-       this._getShareList();
+      // 初始化数据
+       this._getAllList();
     },
     components:{
       Scroll
     },
     methods:{
-      onPullingDown(){
-         console.log('触底加载');
+      concatData:function(adata){
+        this.allList = adata;
       },
-      onPullingUp(){
-        console.log('下拉加载');
-      },
-      _getShareList(){
-        getList(1,20,"share").then((res)=>{
+      // // 获取数据
+      _getAllList(up){
+        getList(1,this.limit,this.stab).then((res)=>{
             if(res.success){
-                this.shareList = changeData(res.data);
+                  this.allList = changeData(res.data);                
             }
         })
       }
@@ -44,7 +45,9 @@
   }
 </script>
 <style lang="scss" scoped>
-  
+  .list-type{
+      margin-top: 13vh;
+  }
 </style>
 
 

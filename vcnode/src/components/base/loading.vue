@@ -1,10 +1,10 @@
 <template>
-  <div class="mf-loading-container">
+    <div class="mf-loading-container">
         <div class="la-ball-clip-rotate-pulse">
             <div></div>
             <div></div>
         </div>
-  </div>
+    </div>
 </template>
 <script type="text/ecmascript-6">
   const COMPONENT_NAME = 'loading'
