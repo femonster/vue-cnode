@@ -19,7 +19,7 @@ function getList(page, limit, tab) {
 
 // 获取文章
 function getArticle(aid) {
-    const url = root + '/topics/' + aid;
+    const url = root + '/topic/' + aid;
     return axios.get(url).then((res) => {
         return Promise.resolve(res.data)
     })

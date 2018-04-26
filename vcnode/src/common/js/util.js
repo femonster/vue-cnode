@@ -81,6 +81,7 @@ const ease = {
 
 
 export {
+    dateFormat,
     changeData,
     getRect,
     ease

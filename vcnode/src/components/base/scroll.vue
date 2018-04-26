@@ -3,26 +3,28 @@
     <div class="list-ul-div">
       <ul class="list-ul">
           <li class="z-depth-1" v-for="(item,index) in data" :key="index" :data-aid="item.id">
-              <div class="title-box">
-                <div class="title-img">
-                  <div class="img-wrap" :style="{backgroundImage:`url(${item.author.avatar_url})`}"></div>
-                  <p>{{item.author.loginname}}</p>
-                </div>
-                <div class="title-content">
-                    <h5>{{item.title}}</h5>
-                    <span>{{item.create_at}}</span>
-                </div>
-              </div>
-              <div class="article" v-html="item.content"></div>
-              <div class="card-footer">
-                  <span class="count">浏览：{{item.visit_count}}</span>
-                  <span class="count">回复：{{item.reply_count}}</span>
-                  <div class="label-icon">
-                      <span class="label top" v-show="item.good">精华</span>
-                      <span class="label top" v-show="item.top">置顶</span>
-                      <span class="label" v-show="(!!item.tab)&&(item.tab!='精华')">{{item.tab}}</span>
+              <router-link :to="{name:'article',params:{id:item.id}}">
+                  <div class="title-box">
+                    <div class="title-img">
+                      <div class="img-wrap" :style="{backgroundImage:`url(${item.author.avatar_url})`}"></div>
+                      <p>{{item.author.loginname}}</p>
+                    </div>
+                    <div class="title-content">
+                        <h5>{{item.title}}</h5>
+                        <span>{{item.create_at}}</span>
+                    </div>
                   </div>
-              </div>
+                  <div class="article" v-html="item.content"></div>
+                  <div class="card-footer">
+                      <span class="count">浏览：{{item.visit_count}}</span>
+                      <span class="count">回复：{{item.reply_count}}</span>
+                      <div class="label-icon">
+                          <span class="label top" v-show="item.good">精华</span>
+                          <span class="label top" v-show="item.top">置顶</span>
+                          <span class="label" v-show="(!!item.tab)&&(item.tab!='精华')">{{item.tab}}</span>
+                      </div>
+                  </div>
+              </router-link>
           </li>
       </ul>
       <!-- 下拉刷新 -->
@@ -151,11 +153,11 @@
         if(!this.$refs.wrapper) return;
         let options = {
             probeType: this.probeType,
-            click: this.click,
             scrollbar: this.scrollbar,
             pullDownRefresh: this.pullDownRefresh,
             pullUpLoad: this.pullUpLoad,
-            bounce: this.bounce
+            bounce: this.bounce,
+            click:true
         }
 
         // 初始化scroll
@@ -222,6 +224,11 @@
             background-color: #fff;
             padding: 10px 15px;
             overflow: hidden;
+            a{
+              display: block;
+              text-decoration: none;
+              color: #333333;
+            }
             .title-box{
               font-size: 0;
               width: 100%;

@@ -11,7 +11,7 @@
 </template>
 <script>
   import Scroll from 'components/base/scroll';
-  import {getList,getArticle} from 'api/api';
+  import {getList} from 'api/api';
   import {changeData,ease} from 'common/js/util';
   export default {
     data(){
