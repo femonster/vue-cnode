@@ -157,6 +157,11 @@ export default {
                     a{
                         color: $lignt-color;
                     }
+                    img{
+                        display: block;
+                        width: 50%;
+                        margin:0 auto;
+                    }
                 }
             }
         }
