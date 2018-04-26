@@ -2,7 +2,7 @@
   <div id="app">
     <m-header></m-header>
     <keep-alive>
-      <router-view></router-view>
+      <router-view :key="key"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -13,6 +13,11 @@ export default {
   name: 'App',
   components:{
     MHeader
+  },
+  computed:{
+      key(){
+        return this.$route.name === 'article'? this.$route.name + +new Date(): this.$route.name
+      }
   }
 }
 </script>

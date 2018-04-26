@@ -53,7 +53,6 @@
 </template>
 <script>
   import BScroll from 'better-scroll';
-  import Bubble from 'components/base/bubble';
   import Loading from 'components/base/loading';
   import {getList,getArticle} from 'api/api';
   import {changeData} from 'common/js/util';

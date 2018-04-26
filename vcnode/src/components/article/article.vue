@@ -37,6 +37,11 @@ export default {
   created(){
       this.getData();
   },
+//   watch:{
+//       '$route'(to,from){
+//           this.getData();
+//       }
+//   },
   filters:{
       format(val){
           if(!val) return;

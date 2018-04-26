@@ -15,18 +15,23 @@ export default new Router({
         redirect: '/all'
     }, {
         path: '/all',
+        name: 'all',
         component: All
     }, {
         path: '/good',
+        name: 'good',
         component: Good
     }, {
         path: '/ask',
+        name: 'ask',
         component: Ask
     }, {
         path: '/share',
+        name: 'share',
         component: Share
     }, {
         path: '/job',
+        name: 'job',
         component: Job
     }, {
         path: '/article/:id',
