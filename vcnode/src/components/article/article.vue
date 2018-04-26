@@ -44,9 +44,13 @@ export default {
         }
     },
     mounted(){
-        setTimeout(()=>{
-          this.initScroll();
-        },20)
+        // 防止初始化时DOM没有全部渲染完
+        this.$nextTick(()=>{
+            setTimeout(()=>{
+                this.initScroll();
+            },20)
+        })
+
     },
     created(){
         this.getData();
