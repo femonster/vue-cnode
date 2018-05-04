@@ -116,7 +116,7 @@ export default {
             .a-content-box{
                 width: 100%;
                 box-sizing: border-box;
-                padding: 5px;
+                padding: 5px 5px 0 5px;
                 background-color: #ffffff;
             }
             .article-box{
