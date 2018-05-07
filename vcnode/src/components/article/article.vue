@@ -27,9 +27,9 @@
                     </div>
                 </div>
             </div>
-            <footer class="c-footer">
-                <p>author zgk</p>
-            </footer>
+            <!-- <footer class="c-footer">
+                author zgk
+            </footer> -->
         </div>
         <r-btn @toTop="toTop" :posy="posy"></r-btn>
   </div>
@@ -50,16 +50,16 @@ export default {
         RBtn
     },
     mounted(){
-        // 防止初始化时DOM没有全部渲染完
+
+    },
+    created(){
+        this.getData();
+                // 防止初始化时DOM没有全部渲染完
         this.$nextTick(()=>{
             setTimeout(()=>{
                 this.initScroll();
             },20)
         })
-
-    },
-    created(){
-        this.getData();
     },
     filters:{
         format(val){
@@ -121,8 +121,8 @@ export default {
         border-bottom: 1px solid #e1e1e1;
         overflow: hidden;
         .for-scroll{
-            margin-top: 1vh;
-            margin-bottom: 2vh;
+            //margin-top: 1vh;
+            padding-bottom: 1vh;
             
             width: 100%;
             .a-content-box{
@@ -212,12 +212,14 @@ export default {
                     }
                 }
             }
-            .c-footer{
-                width: 100%;
-                text-align: center;
-                font-size: 12px;
-                color: #999999;
-            }
+            // .c-footer{
+            //     width: 100%;
+            //     text-align: center;
+            //     font-size: 12px;
+            //     color: #999999;
+            //     height: 1vh;
+            //     margin: 5px 0;
+            // }
         }
         .label{
             display: inline-block;
