@@ -29,15 +29,12 @@ export default {
         }else{
           let toIndex = this.atab.indexOf(to.name);
           let fromIndex = this.atab.indexOf(from.name);
-          console.log(to,from);
-          console.log(toIndex,fromIndex);
           if(toIndex > fromIndex){
               this.transName = "slide-left";
           }else{
               this.transName = "slide-right";
           }
         }
-        console.log(this.transName);
         
     }
   },

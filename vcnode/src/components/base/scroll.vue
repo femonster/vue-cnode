@@ -48,12 +48,13 @@
           </div>
       </div>
     </div>
-
+    <r-btn @toTop="toTop" :posy="posy"></r-btn>
   </div>
 </template>
 <script>
   import BScroll from 'better-scroll';
   import Loading from 'components/base/loading';
+  import RBtn from 'components/base/r-btn';
   import {getList,getArticle} from 'api/api';
   import {changeData} from 'common/js/util';
   export default {
@@ -67,6 +68,7 @@
           beforePullDown:true,
           isPullingDown: false,
           isPullUpFinish:false, 
+          posy:0
       }
     },
     props:{
@@ -76,7 +78,7 @@
       },
       probeType:{
           type:Number,
-          defalut:1
+          defalut:3
       },
       scrollbar: {
         type: null,
@@ -115,6 +117,9 @@
       this.pullDownInitTop = -100
     },
     methods:{
+      toTop(){
+          this.scroll.scrollTo(0,0,500);
+      },
       // refresh scroll
       refresh() {
         this.scroll && this.scroll.refresh();
@@ -161,7 +166,9 @@
 
         // 初始化scroll
         this.scroll = new BScroll(this.$refs.wrapper,options);
-
+        this.scroll.on("scroll",(pos)=>{
+            this.posy = pos.y;
+        })
         if (this.pullDownRefresh) {
           this._initPullDownRefresh()
         }
@@ -200,6 +207,7 @@
     },
     components:{
       Loading,
+      RBtn
       // Bubble
     }
   }

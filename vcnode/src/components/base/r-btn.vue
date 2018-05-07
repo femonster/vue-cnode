@@ -1,6 +1,6 @@
 <template>
   <div class="toolBar">
-      <div class="circle z-depth-1 prev"  @click="toPrev">←</div>
+      <div class="circle z-depth-1 prev" v-show="prev"  @click="toPrev">←</div>
       <div class="circle z-depth-1 toTop" :class="{show:posy<-100}" @click="tellFather">
           ↑
       </div>
@@ -10,7 +10,12 @@
 export default {
   data(){
     return {
-
+      prev:false
+    }
+  },
+  mounted(){
+    if(this.$route.name==="article"){
+        this.prev=true;
     }
   },
   props:{
