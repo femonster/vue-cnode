@@ -31,17 +31,23 @@
                 <p>author zgk</p>
             </footer>
         </div>
+        <r-btn @toTop="toTop" :posy="posy"></r-btn>
   </div>
 </template>
 <script>
 import BScroll from 'better-scroll';
-import {getArticle} from 'api/api' 
-import {dateFormat} from 'common/js/util'
+import {getArticle} from 'api/api' ;
+import {dateFormat} from 'common/js/util';
+import RBtn from 'components/base/r-btn';
 export default {
     data(){
         return{
             aData:[],
+            posy:0
         }
+    },
+    components:{
+        RBtn
     },
     mounted(){
         // 防止初始化时DOM没有全部渲染完
@@ -86,7 +92,7 @@ export default {
         initScroll(){
              if(!this.$refs.wrapper) return;
             let options = {
-                probeType: 1,
+                probeType: 3,
                 scrollbar: {fade:true},
                 bounce: true,
                 click:true
@@ -94,6 +100,12 @@ export default {
 
             // 初始化scroll
             this.scroll = new BScroll(this.$refs.wrapper,options);
+            this.scroll.on("scroll",(pos)=>{
+                this.posy = pos.y;
+            })
+        },
+        toTop(){
+            this.scroll.scrollTo(0,0,500);
         }
     }
 }
