@@ -121,7 +121,7 @@ export default {
         border-bottom: 1px solid #e1e1e1;
         overflow: hidden;
         .for-scroll{
-            margin-top: 1vh;
+            padding-top: 1vh;
             padding-bottom: 1vh;
             
             width: 100%;

@@ -2,7 +2,9 @@
   <div id="app">
     <m-header></m-header>
     <keep-alive>
-      <router-view :key="key"></router-view>
+        <transition :name="transName">
+            <router-view :key="key"></router-view>
+        </transition>
     </keep-alive>
   </div>
 </template>
@@ -11,8 +13,33 @@
 import MHeader from 'components/base/m-header' 
 export default {
   name: 'App',
+  data(){
+    return {
+       transName:"",
+       atab:["all","good","share","ask","job"]
+    }
+  },
   components:{
     MHeader
+  },
+  watch:{
+    '$route' (to,from){
+        if(to.name==="article"||from.name==="article"){
+           this.transName = "fade";
+        }else{
+          let toIndex = this.atab.indexOf(to.name);
+          let fromIndex = this.atab.indexOf(from.name);
+          console.log(to,from);
+          console.log(toIndex,fromIndex);
+          if(toIndex > fromIndex){
+              this.transName = "slide-left";
+          }else{
+              this.transName = "slide-right";
+          }
+        }
+        console.log(this.transName);
+        
+    }
   },
   computed:{
       key(){
@@ -27,5 +54,25 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+.slide-left-active, .slide-left-leave-active,
+.slide-right-active, .slide-right-leave-active {
+  transition: all .5s cubic-bezier(.55,0,.1,1);
+}
+.slide-left-enter, .slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(30px, 0);
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active, .slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
 }
 </style>
