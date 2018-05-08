@@ -258,6 +258,7 @@ export default {
         overflow-x: auto;
     }
     code {
+        background-color: #666;
         color: #fff;
     }
     .markdown-text p,li,pre{
