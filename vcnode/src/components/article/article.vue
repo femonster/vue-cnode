@@ -97,11 +97,11 @@ export default {
                 scrollbar: {fade:true},
                 bounce: true,
                 click:true,
-                preventDefault:false
-                // preventDefaultException:{
-                //     tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|PRE|CODE|DIV)$/,
-                //     className:/(^|\s)prettyprint(\s|$)/
-                // }
+                // preventDefault:false
+                preventDefaultException:{
+                    tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|PRE|CODE|DIV)$/,
+                    className:/(^|\s)prettyprint(\s|$)/
+                }
             }
 
             // 初始化scroll
