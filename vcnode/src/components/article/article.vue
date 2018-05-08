@@ -93,15 +93,11 @@ export default {
         initScroll(){
              if(!this.$refs.wrapper) return;
             let options = {
+                eventPassthrough:"horizontal",
                 probeType: 3,
                 scrollbar: {fade:true},
                 bounce: true,
-                click:true,
-                // preventDefault:false
-                preventDefaultException:{
-                    tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|PRE|CODE|DIV)$/,
-                    className:/(^|\s)prettyprint(\s|$)/
-                }
+                click:true
             }
 
             // 初始化scroll
