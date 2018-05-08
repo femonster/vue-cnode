@@ -1,5 +1,6 @@
 <template>
   <div class="a-box" v-cloak ref="wrapper">
+      
       <!-- 为什么不复用scroll组件，因为本来只打算在首页用scroll，所以scroll组件写的比较死，以后会用solt改写，使其更灵活一些，复用性更大 -->
         <div class="for-scroll">
             <div class="a-content-box z-depth-1">
@@ -95,7 +96,12 @@ export default {
                 probeType: 3,
                 scrollbar: {fade:true},
                 bounce: true,
-                click:true
+                click:true,
+                preventDefault:false
+                // preventDefaultException:{
+                //     tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|PRE|CODE|DIV)$/,
+                //     className:/(^|\s)prettyprint(\s|$)/
+                // }
             }
 
             // 初始化scroll
@@ -158,6 +164,7 @@ export default {
                     line-height: 1.5;
                     p{
                         text-indent: 2em;
+                        word-break: break-all;
                     }
                     img{
                         display: block;
@@ -209,6 +216,12 @@ export default {
                             width: 50%;
                             margin:0 auto;
                         }
+                        p{
+                            line-height: 1.5;
+                            text-indent: 2em;
+                            font-size: 13px;
+                            word-wrap: break-word;
+                        }
                     }
                 }
             }
@@ -233,6 +246,26 @@ export default {
             background-color:#80bd01;
             color: #fff; 
         }
+    }
+    blockquote{
+        border-left: 6px solid #ddd;
+        margin: 20px 0;
+        padding-left: 15px;
+    }
+    blockquote blockquote{
+        border: none;
+        text-align: right;
+    }
+    pre{
+        background-color: #666;
+        padding: 10px;
+        overflow-x: auto;
+    }
+    code {
+        color: #fff;
+    }
+    .markdown-text p,li,pre{
+        font-size: 14px;
     }
 </style>
 
