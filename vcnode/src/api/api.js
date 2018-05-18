@@ -25,8 +25,16 @@ function getArticle(aid) {
     })
 }
 
+function checkAccess(accessToken) {
+    const url = root + '/' + accessToken;
+    return axios.post(url).then((res) => {
+        return Promise.resolve(res.data);
+    })
+}
+
 
 export {
     getList,
-    getArticle
+    getArticle,
+    checkAccess
 }

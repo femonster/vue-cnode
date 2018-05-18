@@ -6,11 +6,13 @@
             <router-view :key="key"></router-view>
         </transition>
     </keep-alive>
+    <m-footer></m-footer>
   </div>
 </template>
 
 <script>
 import MHeader from 'components/base/m-header' 
+import MFooter from 'components/base/m-footer' 
 export default {
   name: 'App',
   data(){
@@ -20,7 +22,8 @@ export default {
     }
   },
   components:{
-    MHeader
+    MHeader,
+    MFooter
   },
   watch:{
     '$route' (to,from){

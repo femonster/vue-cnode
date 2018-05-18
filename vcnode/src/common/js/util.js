@@ -79,10 +79,77 @@ const ease = {
     }
 }
 
+// toast
+var toast = {
+    sCls: "zgktoast",
+    toastTime: null,
+    init: function(text, delay) {
+        console.log(this.sCls);
+        var _this = this;
+        _this.toastTime && clearTimeout(_this.toastTime);
+        var selector = document.querySelector("." + _this.sCls);
+        if (!selector) {
+            var domdiv = document.createElement('div');
+            _this.sCls = 'toast' + Math.random().toString(36).substring(2);
+            domdiv.className = _this.sCls;
+            domdiv.innerText = text;
+            domdiv.style.cssText = "position: fixed;width: auto;max-width: 140px;top:50%;left: 50%;-webkit-transform:translate3d(-50%,-50%,0);padding:10px 12px;background-color: #000;opacity:0.8;border-radius: 12px;z-index: 10001;font-size: 14px;color: #fff;text-align: center;transition:opacity 0.3s ease-in;-webkit-transition:opacity 0.3s ease-in;";
+            document.getElementsByTagName("body")[0].appendChild(domdiv);
+        }
+        _this.toastTime = setTimeout(function() {
+            var selector = document.querySelector("." + _this.sCls);
+            if (!selector) return;
+            selector.style.opacity = '0';
+            setTimeout(function() {
+                selector.parentNode.removeChild(selector);
+            }, 300);
+        }, delay || 2000);
+    }
+}
+
+
+/**
+ * @param {cookie名}
+ * @param {cookie值}
+ * @param {设置cookie域}
+ * @param {过期时间（天）} [varname]
+ */
+function setCookie(name, value, domain, day) {
+    var date = new Date();
+    date.setTime(date.getTime() + 1000 * 60 * 60 * 24 * day);
+    document.cookie = name + '=' + value + ';expires=' + date + ';domain=' + domain + ';path=/';
+}
+
+/**
+ * 获取cookie
+ * @return {[type]} [description]
+ */
+function getCookie() {
+    var data = document.cookie.split(';'),
+        param = {};
+    for (var i = 0; i < data.length; i++) {
+        param[data[i].split('=')[0].replace(/\s/, '')] = data[i].split('=')[1];
+    }
+    return param;
+}
+
+/**
+ * 删除cookie
+ * name: 删除cookie名
+ * domain: 所在的域
+ */
+function delCookie(name, domain) {
+    document.cookie = name + '=' + getCookie(name) + ';expires=' + (new Date(1)) + ';domain=' + domain + ';path=/';
+}
+
 
 export {
     dateFormat,
     changeData,
     getRect,
-    ease
+    ease,
+    toast,
+    setCookie,
+    getCookie,
+    delCookie
 }

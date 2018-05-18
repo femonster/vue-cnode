@@ -124,7 +124,7 @@ export default {
         overflow: hidden;
         .for-scroll{
             padding-top: 1vh;
-            padding-bottom: 1vh;
+            padding-bottom: 7vh;
             
             width: 100%;
             .a-content-box{

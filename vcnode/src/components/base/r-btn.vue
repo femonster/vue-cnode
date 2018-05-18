@@ -49,7 +49,7 @@ export default {
 }
 .toolBar{
   position: fixed;
-  bottom: 15px;
+  bottom: 7vh;
   right: 15px;
   .toTop{
     opacity: 0;
