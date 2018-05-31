@@ -1,13 +1,15 @@
 <template>
 <div class="m-bar">
-    <div class="f-btn home-page"><a href="javascript:;" @click="toMyHome" class="my-person">我的</a></div>
-    <div class="f-btn person-page">编辑</div>
-    <div class="f-btn info-page">消息</div>
-    <div class="login-modal" v-show="modal">
-        <h4>亲，请先登录</h4>   
-        <label for="act">accessToken:</label> 
-        <input type="text" v-model="tmpPwd"/>
-        <button type="button" @click="toLogin">登录</button>
+    <div class="f-btn home-page"><router-link :to="'/all'">首页</router-link></div>
+    <div class="f-btn person-page"><a href="javascript:;" @click="toMyMes">消息</a></div>
+    <div class="f-btn info-page"><a href="javascript:;" @click="toMyHome">我的</a></div>
+    <div class="login-modal" v-if="!islogin" v-show="ismodal">
+        <div class="login-div animated" :class="{bounceInDown:ismodal}">
+            <h4>亲，请先登录</h4>   
+            <input type="text" v-model="tmpPwd" placeholder="accessToken"/>
+            <button type="button" class="login-btn" @click="toLogin">登录</button>
+            <button type="button" class="cancel-btn" @click="toLoginClose">取消</button>
+        </div>
     </div> 
 </div>  
 </template>
@@ -19,28 +21,41 @@ export default {
       return {
           tmpPwd:"",
           accessToken:"",
-          modal:false
+          islogin:false,
+          ismodal:false,
       }
   },
   created(){
         this.accessToken = getCookie().accessToken;
+        this.checkLogin();
   },
   methods:{
       checkLogin(){
-          if(!this.accessToken){
-              this.modal = true;
+          if(this.accessToken){
+                this.islogin = true;
           }
       },
       toLogin(){
-
+          
+      },
+      toLoginClose(){
+          this.ismodal = false;
       },
       toMyHome(){
-          
+        if(!this.islogin){
+            setTimeout(()=>{
+                this.ismodal = true;
+            },300);
+        }
+      },
+      toMyMes(){
+
       }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import 'src/common/scss/animate.scss';
 .m-bar{
     position: fixed;
     bottom: 0;
@@ -52,6 +67,9 @@ export default {
     border-top: 1px solid #80bd01;
     font-size: 0;
     a{
+        display: block;
+        width: 100%;
+        height: 100%;
         text-decoration: none;
         color: #ffffff;
         -webkit-tap-highlight-color: transparent;
@@ -70,6 +88,59 @@ export default {
         line-height: 6.5vh;
         text-align: center;
         color: #ffffff;
+    }
+
+    .login-modal{
+        position: fixed;
+        z-index: 1001;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.5);
+        .login-div{
+            position: absolute;
+            width: 90%;
+            height: 30vh;
+            background: #ffffff;
+            left: 5%;
+            top: 32vh;  
+            font-size: 14px; 
+            border-radius: 5px;
+            box-sizing: border-box;
+            padding: 10px;
+            h4{
+                margin: 0;
+                padding: 0;
+                height: 5vh;
+                line-height: 5vh;
+                text-align: center;
+                border-bottom: 2px solid #80bd01;
+            }
+            input{
+                display: block;
+                width: 80%;
+                height: 5vh;
+                margin:4vh auto;
+            }
+            button{
+                width: 40%;
+                outline: none;
+                border:none;
+                height: 4vh;
+            }
+            .login-btn{
+                background-color: #80bd01;
+                color: #ffffff;
+                margin-left: 10%;
+            }
+            .cancel-btn{
+                background-color: #ffffff;
+                border:1px solid #80bd01;
+            }
+        }
+
+
     }
 }
 </style>
