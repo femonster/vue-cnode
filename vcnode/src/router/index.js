@@ -6,6 +6,7 @@ import Job from 'components/alist/job'
 import Ask from 'components/alist/ask'
 import Share from 'components/alist/share'
 import Article from 'components/article/article'
+import Person from 'components/person/person'
 
 Vue.use(Router)
 
@@ -37,5 +38,9 @@ export default new Router({
         path: '/article/:id',
         name: 'article',
         component: Article
+    }, {
+        path: '/me',
+        name: 'me',
+        component: Person
     }]
 })

@@ -5,10 +5,10 @@
     <div class="f-btn info-page"><a href="javascript:;" @click="toMyHome">我的</a></div>
     <div class="login-modal" v-if="!islogin" v-show="ismodal">
         <div class="login-div animated" :class="{bounceInDown:ismodal}">
-            <h4>亲，请先登录</h4>   
-            <input type="text" v-model="tmpPwd" placeholder="accessToken"/>
-            <button type="button" class="login-btn" @click="toLogin">登录</button>
-            <button type="button" class="cancel-btn" @click="toLoginClose">取消</button>
+            <h4 v-text="titleText"></h4>   
+            <input type="text" v-model.trim="tmpPwd" placeholder="accessToken"/>
+            <button type="button" class="cancel-btn" @click="toLoginClose" :disabled="isloading">取消</button>
+            <button type="button" class="login-btn" @click="toLogin" :disabled="isloading">登录</button>    
         </div>
     </div> 
 </div>  
@@ -23,20 +23,34 @@ export default {
           accessToken:"",
           islogin:false,
           ismodal:false,
+          isloading:false,
+          titleText:"天王盖地虎！"
       }
   },
   created(){
         this.accessToken = getCookie().accessToken;
-        this.checkLogin();
+        if(this.accessToken){
+           this.islogin = true;
+        }
   },
   methods:{
-      checkLogin(){
-          if(this.accessToken){
-                this.islogin = true;
-          }
-      },
       toLogin(){
-          
+        if(!this.tmpPwd){
+            this.titleText="正晌午说话，谁还没有家？";
+            return;
+        }
+        this.titleText = "正在验证暗号...";
+        this.isloading = true;
+        checkAccess(this.tmpPwd).then((res)=>{
+            if(res.success){
+                setCookie(this.accessToken,this.tmpPwd,window.location.host,30);
+                this.titleText = "宝塔镇河妖！是自家兄弟！";
+                this.islogin = true;
+            }
+        }).catch((e)=>{
+            this.isloading = false;
+            this.titleText="野鸡闷头钻，哪能上天王山？";
+        })
       },
       toLoginClose(){
           this.ismodal = false;
@@ -46,10 +60,18 @@ export default {
             setTimeout(()=>{
                 this.ismodal = true;
             },300);
+        }else{
+
         }
       },
       toMyMes(){
-
+          if(!this.islogin){
+            setTimeout(()=>{
+                this.ismodal = true;
+            },300);
+        }else{
+            
+        }
       }
   }
 }
@@ -122,6 +144,7 @@ export default {
                 width: 80%;
                 height: 5vh;
                 margin:4vh auto;
+                text-indent: 1em;
             }
             button{
                 width: 40%;
@@ -132,11 +155,11 @@ export default {
             .login-btn{
                 background-color: #80bd01;
                 color: #ffffff;
-                margin-left: 10%;
             }
             .cancel-btn{
                 background-color: #ffffff;
                 border:1px solid #80bd01;
+                 margin-left: 10%;
             }
         }
 
