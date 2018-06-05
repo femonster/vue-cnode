@@ -1,6 +1,6 @@
 <template>
 <div class="m-bar">
-    <div class="f-btn home-page"><router-link :to="'/all'">首页</router-link></div>
+    <div class="f-btn home-page"><router-link :to="'/main/all'">首页</router-link></div>
     <div class="f-btn person-page"><a href="javascript:;" @click="toMyMes">消息</a></div>
     <div class="f-btn info-page"><a href="javascript:;" @click="toMyHome">我的</a></div>
     <div class="login-modal" v-if="!islogin" v-show="ismodal">
@@ -30,8 +30,24 @@ export default {
   created(){
         this.accessToken = getCookie().accessToken;
         if(this.accessToken){
-           this.islogin = true;
+           checkAccess(this.accessToken).then((res)=>{
+                if(res.success){
+                    this.islogin = true;
+                    if(!getCookie().loginname){
+                        setCookie("loginname",res.loginname,window.location.hostname,30);
+                    }
+                    if(!this.islogin){
+                        console.log("用户未登陆");
+                    }else{
+                        console.log("用户已登陆",this.accessToken);
+                    }
+                }
+            })
+        }else{
+            console.log("用户未登陆");
         }
+        
+        
   },
   methods:{
       toLogin(){
@@ -43,9 +59,14 @@ export default {
         this.isloading = true;
         checkAccess(this.tmpPwd).then((res)=>{
             if(res.success){
-                setCookie(this.accessToken,this.tmpPwd,window.location.host,30);
+                this.accessToken = this.tmpPwd;
+                setCookie("accessToken",this.tmpPwd,window.location.hostname,30);
+                setCookie("loginname",res.loginname,window.location.hostname,30);
                 this.titleText = "宝塔镇河妖！是自家兄弟！";
-                this.islogin = true;
+                setTimeout(()=>{
+                    this.islogin = true;
+                },1000);
+                console.log(this.accessToken);
             }
         }).catch((e)=>{
             this.isloading = false;
@@ -61,7 +82,7 @@ export default {
                 this.ismodal = true;
             },300);
         }else{
-
+            this.$router.push('/me');
         }
       },
       toMyMes(){

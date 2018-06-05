@@ -1,50 +1,20 @@
 <template>
   <div id="app">
-    <m-header></m-header>
     <keep-alive>
-        <transition :name="transName">
-            <router-view :key="key"></router-view>
+        <transition>
+            <router-view></router-view>
         </transition>
     </keep-alive>
     <m-footer></m-footer>
   </div>
 </template>
 
-<script>
-import MHeader from 'components/base/m-header' 
+<script> 
 import MFooter from 'components/base/m-footer' 
 export default {
   name: 'App',
-  data(){
-    return {
-       transName:"",
-       atab:["all","good","share","ask","job"]
-    }
-  },
   components:{
-    MHeader,
     MFooter
-  },
-  watch:{
-    '$route' (to,from){
-        if(to.name==="article"||from.name==="article"){
-           this.transName = "fade";
-        }else{
-          let toIndex = this.atab.indexOf(to.name);
-          let fromIndex = this.atab.indexOf(from.name);
-          if(toIndex > fromIndex){
-              this.transName = "slide-left";
-          }else{
-              this.transName = "slide-right";
-          }
-        }
-        
-    }
-  },
-  computed:{
-      key(){
-        return this.$route.name === 'article'? this.$route.name + +new Date(): this.$route.name
-      }
   }
 }
 </script>
@@ -61,18 +31,5 @@ export default {
 .fade-enter, .fade-leave-active {
   opacity: 0
 }
-.slide-left-active, .slide-left-leave-active,
-.slide-right-active, .slide-right-leave-active {
-  transition: all .5s cubic-bezier(.55,0,.1,1);
-}
-.slide-left-enter, .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(30px, 0);
-  transform: translate(30px, 0);
-}
-.slide-left-leave-active, .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-30px, 0);
-  transform: translate(-30px, 0);
-}
+
 </style>

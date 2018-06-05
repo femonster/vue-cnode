@@ -2,11 +2,11 @@
   <div class="m-header z-depth-1">
       <img src="https://cnodejs.org/public/images/cnodejs_light.svg" alt="logo">
       <ul class="all-list">
-          <li><router-link :to="'/all'">全部</router-link></li>
-          <li><router-link :to="'/good'">精华</router-link></li>
-          <li><router-link :to="'/share'">分享</router-link></li>
-          <li><router-link :to="'/ask'">问答</router-link></li>
-          <li><router-link :to="'/job'">招聘</router-link></li>
+          <li><router-link :to="'/main/all'">全部</router-link></li>
+          <li><router-link :to="'/main/good'">精华</router-link></li>
+          <li><router-link :to="'/main/share'">分享</router-link></li>
+          <li><router-link :to="'/main/ask'">问答</router-link></li>
+          <li><router-link :to="'/main/job'">招聘</router-link></li>
       </ul>
   </div>
 </template>

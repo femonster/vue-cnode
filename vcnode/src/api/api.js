@@ -35,9 +35,17 @@ function checkAccess(aToken) {
     })
 }
 
+function getMeInfo(loginname) {
+    const url = root + '/user/' + loginname;
+    return axios.get(url).then((res) => {
+        return Promise.resolve(res.data);
+    })
+}
+
 
 export {
     getList,
     getArticle,
-    checkAccess
+    checkAccess,
+    getMeInfo
 }
